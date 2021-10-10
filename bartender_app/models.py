@@ -44,15 +44,13 @@ class DrinkInstruction(models.Model):
     def __str__(self):
         return f"{self.title}"
 
-class User(models.Model):
-    email = models.EmailField(null=False, unique=True)
-    password = models.CharField(max_length=50)
-    favourite_drinks = models.ManyToManyField(Drink, related_name="favourite_users")
-
 
 class UserIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="available_ingredients")
+
+    def __str__(self):
+        return f"{self.ingredient} - {self.user.username}"
 
 
 

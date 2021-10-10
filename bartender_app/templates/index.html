@@ -54,8 +54,8 @@
         Want a specific drink recipe added? Want some extra functionality or just fancy a chat? <br/>
         Get in touch with us using the form below.
     </p>
-    <form id="contact-form" method="post" action="contact.php" role="form" class="pb-3">
-
+    <form id="contact-form" method="post" role="form" class="pb-3">
+        {% csrf_token %}
         <div class="messages"></div>
 
         <div class="controls">

@@ -8,6 +8,9 @@ django = "*"
 django-admin = "*"
 djangorestframework = "*"
 django-filter = "*"
+celery = "*"
+redis = "*"
+sasl = "*"
 
 [dev-packages]
 
