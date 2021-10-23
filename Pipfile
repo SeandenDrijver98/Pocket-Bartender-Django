@@ -11,6 +11,8 @@ django-filter = "*"
 celery = "*"
 redis = "*"
 sasl = "*"
+scrapy = "*"
+scrapy-djangoitem = "*"
 
 [dev-packages]
 

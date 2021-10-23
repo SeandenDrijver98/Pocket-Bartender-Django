@@ -1,6 +1,6 @@
 import django_filters
 from .models import Drink,Ingredient,UserIngredient, DrinkIngredient
-from django.db.models import Count,OuterRef,Q
+from django.db.models import Count,Q,ExpressionWrapper,F, FloatField
 
 
 class DrinksFilterSet(django_filters.FilterSet):
@@ -10,6 +10,7 @@ class DrinksFilterSet(django_filters.FilterSet):
             field_name='stock',
             method='ordering_filter'
         )
+        # spirit = django_filters.C
 
         class Meta:
             model = Drink
@@ -26,12 +27,18 @@ class DrinksFilterSet(django_filters.FilterSet):
                 """
                 user = self.request.user
                 # Order by number of owned ingredients
-                return queryset.all().annotate(ingredient_count=Count('ingredients__ingredient',filter=Q(ingredients__ingredient__id__in=UserIngredient.objects.filter(user_id=1).values_list('ingredient_id',flat=True)))).order_by('ingredient_count')
-
-                # Order by fewest missing ingredients
+                # return queryset.all().annotate(ingredient_count=Count('ingredients__ingredient',filter=Q(ingredients__ingredient__id__in=UserIngredient.objects.filter(user_id=1).values_list('ingredient_id',flat=True)))).order_by('ingredient_count')
 
 
                 # Order by lowest percentage of missing ingredients
+                return queryset.all().annotate(ingredient_stock_count=Count('ingredients__ingredient', filter=Q(
+                    ingredients__ingredient__id__in=UserIngredient.objects.filter(user_id=1).values_list('ingredient_id',
+                                                                                                         flat=True))),
+                                               ingredient_count=Count('ingredients__ingredient'),
+                                               ingredient_stock_ratio=ExpressionWrapper(
+                                                   F('ingredient_stock_count')/F('ingredient_count'),output_field=FloatField()
+                                               )).order_by('ingredient_count')
+
 
 class IngredientsFilterSet(django_filters.FilterSet):
     in_stock = django_filters.BooleanFilter(method='in_stock_filter')

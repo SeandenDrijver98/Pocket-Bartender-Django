@@ -19,6 +19,7 @@ class Drink(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True)
     image = models.ImageField(upload_to='media/drinks')
+    instructions = models.TextField(null=True)
 
     class Meta:
         ordering = ['title']
@@ -39,7 +40,7 @@ class DrinkIngredient(models.Model):
 
 class DrinkInstruction(models.Model):
     title = models.TextField(null=True)
-    drink = models.ForeignKey(Drink, related_name="instructions", on_delete=models.CASCADE, null=True)
+    drink = models.ForeignKey(Drink, related_name="instructions_linked", on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.title}"

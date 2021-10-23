@@ -9,7 +9,7 @@ class DrinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Drink
-        fields = ['title', 'ingredients', 'instructions', 'description', 'image']
+        fields = ['id', 'title', 'ingredients', 'instructions', 'description', 'image']
 
 
 class IngredientSerializer(serializers.ModelSerializer):
