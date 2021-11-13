@@ -23,8 +23,8 @@ class IngredientViewSet(viewsets.ModelViewSet):
 
 
 def signup_view(request):
-    username = request.POST['email_address']
-    password = request.POST['password']
+    username = request.POST["email_address"]
+    password = request.POST["password"]
     user = User.objects.create_user(username=username, password=password)
 
     if user:
@@ -32,14 +32,14 @@ def signup_view(request):
 
 
 def login_view(request):
-    username = request.POST['email_address']
-    password = request.POST['password']
+    username = request.POST["email_address"]
+    password = request.POST["password"]
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
         # Redirect to a success page.
         print("logged in")
-        return redirect('drink-list')
+        return redirect("drink-list")
     else:
         return
 

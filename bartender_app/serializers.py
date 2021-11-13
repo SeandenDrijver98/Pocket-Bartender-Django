@@ -6,13 +6,12 @@ class DrinkSerializer(serializers.ModelSerializer):
     instructions = serializers.StringRelatedField(many=True)
     ingredients = serializers.StringRelatedField(many=True)
 
-
     class Meta:
         model = Drink
-        fields = ['id', 'title', 'ingredients', 'instructions', 'description', 'image']
+        fields = ["id", "title", "ingredients", "instructions", "description", "image"]
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ['id', 'title']
+        fields = ["id", "title"]

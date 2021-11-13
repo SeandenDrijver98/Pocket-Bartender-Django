@@ -10,9 +10,10 @@ djangorestframework = "*"
 django-filter = "*"
 celery = "*"
 redis = "*"
-sasl = "*"
 scrapy = "*"
 scrapy-djangoitem = "*"
+django-cors-headers = "*"
+pillow = "*"
 
 [dev-packages]
 
