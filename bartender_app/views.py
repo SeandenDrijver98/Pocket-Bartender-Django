@@ -1,11 +1,19 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, filters
-from .models import Drink, Ingredient
-from .serializers import DrinkSerializer, IngredientSerializer
+from rest_framework.decorators import permission_classes
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from .models import Drink, Ingredient, UserIngredient, User
+from .serializers import (
+    DrinkSerializer,
+    IngredientSerializer,
+    UserSerializer,
+    UserIngredientSerializer,
+)
 from .filters import DrinksFilterSet
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect
-from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -22,27 +30,31 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
 
 
-def signup_view(request):
-    username = request.POST["email_address"]
-    password = request.POST["password"]
-    user = User.objects.create_user(username=username, password=password)
+# @permission_classes([IsAuthenticated])
+class UserIngredientViewset(viewsets.ModelViewSet):
+    queryset = UserIngredient.objects.all()
+    serializer_class = UserIngredientSerializer
 
-    if user:
-        login(request, user)
-
-
-def login_view(request):
-    username = request.POST["email_address"]
-    password = request.POST["password"]
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        # Redirect to a success page.
-        print("logged in")
-        return redirect("drink-list")
-    else:
-        return
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user).order_by(
+            "-ingredient__title"
+        )
 
 
-def logout_view(request):
-    logout(request)
+# Register API
+class UserAPI(GenericAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = []
+    authentication_classes = []
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {
+                "user": serializer.data,
+                "message": "User Created Successfully.  Now perform Login to get your token",
+            }
+        )
