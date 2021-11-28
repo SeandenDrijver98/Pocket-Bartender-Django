@@ -12,7 +12,7 @@ from .views import index
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("", index),
-    path("admin/", admin.site.urls),
+    path("ohshnapp/", admin.site.urls),
     path("api/", include("bartender_app.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

@@ -30,7 +30,7 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
 
 
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class UserIngredientViewset(viewsets.ModelViewSet):
     queryset = UserIngredient.objects.all()
     serializer_class = UserIngredientSerializer
