@@ -12,21 +12,20 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-1%xu#vkth31&!cq69n&4x@82t9wvg@hph63omcf&nk!5ph5j=4"
+SECRET_KEY = os.environ["SECRET_KEY"]
+DEBUG = os.environ["DEBUG"]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["http://localhost:3000", "https://pocket-bartender.netlify.app/"]
 
 
 # Application definition
@@ -54,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "bartender_backend.urls"
@@ -83,10 +83,21 @@ DEFAULT_AUTHENTICATION_CLASSES = [
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASS,
+        "HOST": DB_HOST,
+        "PORT": DB_PORT,
+        "DISABLE_SERVER_SIDE_CURSORS": False,
     }
 }
 
@@ -154,10 +165,12 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://pocket-bartender.netlify.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "https://pocket-bartender.netlify.app/",
 ]
 # Celery Settings
 BROKER_URL = "redis://localhost:6379"
@@ -166,3 +179,11 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Africa/Johannesburg"
+
+# MAIL
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+FROM_MAIL = "pocket.bartender@gmail.com"
+FROM_NAME = "Pocket Bartender"
+# SENDGRID_TEMPLATES = {
+#     "daily_prices": "d-9b3fec25c9cf4de8b19c01306a38073f",
+#     }

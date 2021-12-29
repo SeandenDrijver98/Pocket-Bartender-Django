@@ -14,10 +14,12 @@ class DrinkSerializer(serializers.ModelSerializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ["id", "title"]
+        fields = ["id", "title", "type"]
 
 
 class UserIngredientSerializer(serializers.ModelSerializer):
+    ingredient = IngredientSerializer(many=False, read_only=True)
+
     class Meta:
         model = UserIngredient
         fields = ["ingredient"]

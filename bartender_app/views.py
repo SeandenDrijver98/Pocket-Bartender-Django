@@ -1,3 +1,5 @@
+from time import sleep
+
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, filters
@@ -23,6 +25,11 @@ class DrinkViewSet(viewsets.ModelViewSet):
     serializer_class = DrinkSerializer
     # filter_backends = [filters.SearchFilter]
     # search_fields = ['title','ingredients__title']
+
+    def list(self, request, *args, **kwargs):
+        print("here")
+        sleep(10)
+        return Response(data={}, status=200)
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
