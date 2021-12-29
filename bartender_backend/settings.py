@@ -31,7 +31,6 @@ ALLOWED_HOSTS = ["http://localhost:3000", "https://pocket-bartender.netlify.app/
 # Application definition
 
 INSTALLED_APPS = [
-    "bartender_app",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "corsheaders",
+    "bartender_app",
 ]
 
 MIDDLEWARE = [
