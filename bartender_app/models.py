@@ -11,6 +11,7 @@ class Ingredient(models.Model):
     ]
     title = models.CharField(max_length=255)
     type = models.CharField(choices=INGREDIENT_TYPE_CHOICES, max_length=15)
+    description = models.TextField(null=True)
 
     class Meta:
         ordering = ["title"]
