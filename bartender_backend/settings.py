@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = os.environ["DEBUG"]
 
-ALLOWED_HOSTS = ["127.0.0.1:9000", "pocket-bartender.herokuapp.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "pocket-bartender.herokuapp.com"]
 
 
 # Application definition

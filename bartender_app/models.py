@@ -47,16 +47,6 @@ class DrinkIngredient(models.Model):
         return f"{self.quantity_needed} {self.measurement} {self.ingredient}"
 
 
-class DrinkInstruction(models.Model):
-    title = models.TextField(null=True)
-    drink = models.ForeignKey(
-        Drink, related_name="instructions_linked", on_delete=models.CASCADE, null=True
-    )
-
-    def __str__(self):
-        return f"{self.title}"
-
-
 class UserIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     user = models.ForeignKey(

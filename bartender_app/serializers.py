@@ -3,7 +3,6 @@ from bartender_app.models import Drink, Ingredient, User, UserIngredient
 
 
 class DrinkSerializer(serializers.ModelSerializer):
-    instructions = serializers.StringRelatedField(many=True)
     ingredients = serializers.StringRelatedField(many=True)
 
     class Meta:
