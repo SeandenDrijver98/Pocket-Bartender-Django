@@ -23,8 +23,11 @@ class DrinkViewSet(viewsets.ModelViewSet):
     queryset = Drink.objects.all()
     filterset_class = DrinksFilterSet
     serializer_class = DrinkSerializer
-    # filter_backends = [filters.SearchFilter]
-    # search_fields = ['title','ingredients__title']
+    filter_backends = [filters.SearchFilter]
+    search_fields = [
+        "title",
+    ]
+
     #
     # def list(self, request, *args, **kwargs):
     #     return Response(data={}, status=200)

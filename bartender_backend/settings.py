@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -90,17 +91,18 @@ DB_PASS = os.getenv("DB_PASS")
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": DB_NAME,
-        "USER": DB_USER,
-        "PASSWORD": DB_PASS,
-        "HOST": DB_HOST,
-        "PORT": DB_PORT,
-        "DISABLE_SERVER_SIDE_CURSORS": False,
-    }
-}
+DATABASES = dj_database_url.config(conn_max_age=600)
+# {
+# "default": {
+#     "ENGINE": "django.db.backends.postgresql_psycopg2",
+#     "NAME": DB_NAME,
+#     "USER": DB_USER,
+#     "PASSWORD": DB_PASS,
+#     "HOST": DB_HOST,
+#     "PORT": DB_PORT,
+#     "DISABLE_SERVER_SIDE_CURSORS": False,
+# }
+# }
 
 
 # Password validation
@@ -145,6 +147,9 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 if DEBUG:
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "/media")
+else:
     # aws settings
     AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
@@ -160,9 +165,6 @@ if DEBUG:
     # s3 public media settings
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
     DEFAULT_FILE_STORAGE = "bartender_backend.storage_backends.PublicMediaStorage"
-else:
-    MEDIA_URL = "/media/"
-    MEDIA_ROOT = os.path.join(BASE_DIR, "/media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
