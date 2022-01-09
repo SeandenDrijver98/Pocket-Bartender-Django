@@ -2,7 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
+class Category(models.Model):
+    title = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.title
+
+
 class Ingredient(models.Model):
     INGREDIENT_TYPE_CHOICES = [
         ("spirit", "SPIRIT"),
@@ -25,6 +35,7 @@ class Drink(models.Model):
     description = models.TextField(null=True)
     image = models.ImageField(upload_to="media/drinks")
     instructions = models.TextField(null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ["title"]
@@ -39,6 +50,7 @@ class DrinkIngredient(models.Model):
     )
     quantity_needed = models.FloatField(default=0)
     measurement = models.CharField(max_length=255, default="", blank=True)
+    optional = models.BooleanField(default=False)
     drink = models.ForeignKey(
         Drink, related_name="ingredients", on_delete=models.CASCADE, null=True
     )
