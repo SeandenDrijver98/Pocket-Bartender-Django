@@ -13,6 +13,15 @@ class Category(models.Model):
         return self.title
 
 
+class Glass(models.Model):
+    title = models.CharField(null=False, max_length=255)
+    description = models.TextField(null=True, blank=True)
+    image = models.ImageField(upload_to="media/glasses")
+
+    def __str__(self):
+        return f"{self.title}"
+
+
 class Ingredient(models.Model):
     INGREDIENT_TYPE_CHOICES = [
         ("spirit", "SPIRIT"),
@@ -21,7 +30,7 @@ class Ingredient(models.Model):
     ]
     title = models.CharField(max_length=255)
     type = models.CharField(choices=INGREDIENT_TYPE_CHOICES, max_length=15)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ["title"]
@@ -36,6 +45,10 @@ class Drink(models.Model):
     image = models.ImageField(upload_to="media/drinks")
     instructions = models.TextField(null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    method = models.TextField(
+        choices=[("shaken", "Shaken"), ("stirred", "Stirred")], null=True
+    )
+    glass = models.ForeignKey(Glass, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ["title"]

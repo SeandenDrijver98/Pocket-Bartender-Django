@@ -2,6 +2,7 @@ from time import sleep
 
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import GenericAPIView
@@ -23,7 +24,11 @@ class DrinkViewSet(viewsets.ModelViewSet):
     queryset = Drink.objects.all()
     filterset_class = DrinksFilterSet
     serializer_class = DrinkSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        DjangoFilterBackend,
+    ]
     search_fields = [
         "title",
     ]
