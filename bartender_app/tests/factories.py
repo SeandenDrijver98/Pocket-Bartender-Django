@@ -1,20 +1,17 @@
 from factory import LazyAttribute, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 from random import randint
-import mimesis
-
+from faker import Faker
 from ..models import Ingredient
 
-fake = mimesis.Generic('en')
+fake = Faker()
 
 
 class IngredientFactory(DjangoModelFactory):
-    """A factory class used for creating Ingredients, only for testing purposes.
-    """
+    """A factory class used for creating Ingredients, only for testing purposes."""
 
     title = LazyAttribute(lambda obj: fake.text.title())
-    quantity = LazyAttribute(lambda _: randint(20, 120))  # nosec
-
+    quantity = LazyAttribute(lambda _: randint(20, 120))
 
     class Meta:
         model = Ingredient
